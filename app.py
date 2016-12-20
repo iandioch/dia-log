@@ -26,7 +26,10 @@ def add_blood():
     password = request.form['pass']
     if not check_auth(user, password):
         return 'not ok'
-    date = pendulum.parse(request.form['date'])
+    raw_date = request.form['date']
+    date = pendulum.parse(raw_date)
+    print ('raw: "%s", parsed date: "%s"' %
+            (raw_date, date))
     mmol = float(request.form['mmol'])
     outdir = (config['blood_dir'] + '/' + user)
     outfile = outdir + '/' + str(date)
