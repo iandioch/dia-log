@@ -1,4 +1,6 @@
 {
   "host": "localhost",
-  "port": 7886
+  "port": 7886,
+  "debug": true,
+  "password_file": "users.json"
 }

@@ -1,15 +1,28 @@
 import pendulum
 import json
 import sys
+from auth import Auth
 from flask import Flask, request
+
 app = Flask(__name__)
+auth = None
 
 config = {}
+
+def check_auth(user, password):
+    valid = auth.check_user_pass(user, password)
+    if valid:
+        print('User %s authenticated successfully.' % user)
+    else:
+        print('User %s did not authenticate succesfully!' % user)
+    return valid
 
 @app.route("/blood/add/", methods=['POST'])
 def add_blood():
     user = request.form['user']
     password = request.form['pass']
+    if not check_auth(user, password):
+        return 'not ok'
     date = pendulum.parse(request.form['date'])
     print(date)
     mmol = request.form['mmol']
@@ -27,4 +40,6 @@ def load_config_file():
 
 if __name__ == '__main__':
     config = load_config_file()
+    auth = Auth(debug=config['debug'])
+    auth.load_password_file(config['password_file'])
     app.run(host=config['host'], port=config['port'])
