@@ -28,6 +28,19 @@ def add_blood():
     mmol = request.form['mmol']
     return 'ok'
 
+@app.route('/admin/add_user/', methods=['POST'])
+def add_user():
+    old_user = request.form['user']
+    old_pass = request.form['pass']
+    if not check_auth(old_user, old_pass):
+        return 'not ok'
+    new_user = request.form['new_user']
+    new_pass = request.form['new_pass']
+    auth.add_user_pass(new_user, new_pass)
+    print ('New user %s added successfully by %s' % (new_user, old_user))
+    auth.save_password_file(config['password_file'])
+    return 'ok'
+
 def load_config_file():
     config_file = 'config.json'
     if (len(sys.argv) > 1):
