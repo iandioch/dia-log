@@ -1,3 +1,4 @@
+import pendulum
 import json
 import sys
 from flask import Flask, request
@@ -9,7 +10,8 @@ config = {}
 def add_blood():
     user = request.form['user']
     password = request.form['pass']
-    date = request.form['date']
+    date = pendulum.parse(request.form['date'])
+    print(date)
     mmol = request.form['mmol']
     return 'ok'
 
