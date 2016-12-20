@@ -20,7 +20,7 @@ def check_auth(user, password):
     return valid
 
 
-@app.route("/api/blood/add/", methods=['POST'])
+@app.route("/blood/add/", methods=['POST'])
 def add_blood():
     user = request.form['user']
     password = request.form['pass']
@@ -39,7 +39,7 @@ def add_blood():
     return 'ok'
 
 
-@app.route('/api/admin/add_user/', methods=['POST'])
+@app.route('/admin/add_user/', methods=['POST'])
 def add_user():
     old_user = request.form['user']
     old_pass = request.form['pass']
