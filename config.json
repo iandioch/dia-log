@@ -2,5 +2,6 @@
   "host": "localhost",
   "port": 7886,
   "debug": true,
-  "password_file": "users.json"
+  "password_file": "users.json",
+  "blood_dir": "~/bloods"
 }
