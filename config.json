@@ -3,5 +3,5 @@
   "port": 7886,
   "debug": true,
   "password_file": "users.json",
-  "blood_dir": "~/bloods"
+  "blood_dir": "/home/waterloo/bloods"
 }
