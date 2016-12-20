@@ -2,12 +2,13 @@ import pendulum
 import json
 import sys
 from auth import Auth
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 
 app = Flask(__name__)
 auth = None
 
 config = {}
+
 
 def check_auth(user, password):
     valid = auth.check_user_pass(user, password)
@@ -17,7 +18,8 @@ def check_auth(user, password):
         print('User %s did not authenticate succesfully!' % user)
     return valid
 
-@app.route("/blood/add/", methods=['POST'])
+
+@app.route("/api/blood/add/", methods=['POST'])
 def add_blood():
     user = request.form['user']
     password = request.form['pass']
@@ -25,10 +27,16 @@ def add_blood():
         return 'not ok'
     date = pendulum.parse(request.form['date'])
     print(date)
-    mmol = request.form['mmol']
+    mmol = float(request.form['mmol'])
+    outdir = config['blood_dir'] + '/' user 
+    os.makedirs(outdir)
+    with open(outdir + '/' + date, 'w') as f:
+        f.write(mmol)
+        f.write('\n')
     return 'ok'
 
-@app.route('/admin/add_user/', methods=['POST'])
+
+@app.route('/api/admin/add_user/', methods=['POST'])
 def add_user():
     old_user = request.form['user']
     old_pass = request.form['pass']
