@@ -6,7 +6,7 @@ All numbers are expected to be in `mmol/L`.
 
 # Setup
 
-Requires python2 (might work with python3, I haven't tried xo). Run `pip -r requirements.txt` to install the dependencies.
+Requires python2 (might work with python3, I haven't tried xo). Run `pip install -r requirements.txt` to install the dependencies.
 
 The first time you run the server (with `python app.py`), you should run it with `debug` set to `true` in `config.json`. This will let you add a new user account, with something like the following:
 
