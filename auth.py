@@ -1,5 +1,5 @@
-import hashlib
 import json
+from passlib.hash import bcrypt
 
 class Auth:
     def __init__(self, debug=False):
@@ -10,7 +10,7 @@ class Auth:
         self.debug = debug
 
     def _encrypt(self, data):
-        return hashlib.sha224(data).hexdigest()
+        return bcrypt.using(rounds=12).hash(data)
 
     def load_password_file(self, file_loc):
         with open(file_loc, 'r') as f:
@@ -21,10 +21,15 @@ class Auth:
         and False otherwise."""
         if user not in self.db:
             return False
-        hashed_pw = self._encrypt(password)
         if self.debug:
-            return self.db[user] == password or self.db[user] == hashed_pw
-        return self.db[user] == hashed_pw
+            return self.db[user] == password or \
+                    bcrypt.verify(password, self.db[user]) 
+        try:
+            return bcrypt.verify(password, self.db[user]) 
+        except ValueError:
+            # happens when password is in plaintext, for debug
+            # mode
+            return False
 
     def add_user_pass(self, user, password):
         hashed_pw = self._encrypt(password)
