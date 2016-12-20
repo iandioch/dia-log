@@ -1,5 +1,6 @@
-import pendulum
 import json
+import os
+import pendulum
 import sys
 from auth import Auth
 from flask import Flask, request, send_from_directory
@@ -26,9 +27,11 @@ def add_blood():
     if not check_auth(user, password):
         return 'not ok'
     date = pendulum.parse(request.form['date'])
-    print(date)
     mmol = float(request.form['mmol'])
-    outdir = config['blood_dir'] + '/' user 
+    outdir = (config['blood_dir'] + '/' + user)
+    outfile = outdir + '/' + date
+    print ('Writing %s\'s blood level to "%s"' %
+            (user, outfile))
     os.makedirs(outdir)
     with open(outdir + '/' + date, 'w') as f:
         f.write(mmol)
