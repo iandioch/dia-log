@@ -29,12 +29,16 @@ def add_blood():
     date = pendulum.parse(request.form['date'])
     mmol = float(request.form['mmol'])
     outdir = (config['blood_dir'] + '/' + user)
-    outfile = outdir + '/' + date
+    outfile = outdir + '/' + str(date)
     print ('Writing %s\'s blood level to "%s"' %
             (user, outfile))
-    os.makedirs(outdir)
-    with open(outdir + '/' + date, 'w') as f:
-        f.write(mmol)
+    try:
+        os.makedirs(outdir)
+    except OSError as e:
+        # dir already exists
+        print(e)
+    with open(outfile, 'w') as f:
+        f.write(str(mmol))
         f.write('\n')
     return 'ok'
 
