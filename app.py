@@ -1,13 +1,17 @@
 import json
 import sys
-from flask import Flask
+from flask import Flask, request
 app = Flask(__name__)
 
 config = {}
 
-@app.route("/blood/add/")
+@app.route("/blood/add/", methods=['POST'])
 def add_blood():
-    pass
+    user = request.form['user']
+    password = request.form['pass']
+    date = request.form['date']
+    mmol = request.form['mmol']
+    return 'ok'
 
 def load_config_file():
     config_file = 'config.json'
