@@ -20,6 +20,15 @@ def check_auth(user, password):
     return valid
 
 
+def load_list_of_blood_files(user):
+    return os.listdir(config['blood_dir'] + '/' + user)
+
+
+def load_blood_file(user, date):
+    with open(config['blood_dir'] + '/' + user + '/' + date, 'r') as f:
+        return float(f.readline())
+
+
 @app.route("/blood/add/", methods=['POST'])
 def add_blood():
     user = request.form['user']
@@ -44,6 +53,25 @@ def add_blood():
         f.write(str(mmol))
         f.write('\n')
     return 'ok'
+
+
+@app.route("/blood/get/", methods=['POST'])
+def get_blood():
+    user = request.form['user']
+    password = request.form['pass']
+    if not check_auth(user, password):
+        return 'not ok'
+    n = 0
+    if 'n' in request.form:
+        n = int(request.form['n'])
+    files = load_list_of_blood_files(user)
+    if 0 <= n < len(files):
+        date = files[n]
+        return json.dumps({
+            'date': date,
+            'mmol': load_blood_file(user, date)
+        })
+    return 'not ok'
 
 
 @app.route('/admin/add_user/', methods=['POST'])
