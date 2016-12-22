@@ -22,7 +22,8 @@ def check_auth(user, password):
 
 def load_list_of_blood_files(user):
     # todo: create utility method to get a specific user's dir
-    return os.listdir(config['blood_dir'] + '/' + user)
+    return sorted(os.listdir(config['blood_dir'] + '/' + user),
+                  reverse=True)
 
 
 def load_blood_file(user, date):
@@ -84,6 +85,35 @@ def get_blood():
         })
     # todo: return valid json for all responses
     return 'not ok'
+
+
+@app.route("/blood/get_many/", methods=['POST'])
+def get_many_blood():
+    # todo: move auth to decorator
+    user = request.form['user']
+    password = request.form['pass']
+    if not check_auth(user, password):
+        return 'not ok'
+    if 'start' not in request.form or \
+        'end' not in request.form:
+        return 'not ok'
+    start = str(pendulum.parse(request.form['start']))
+    end = str(pendulum.parse(request.form['end']))
+    files = load_list_of_blood_files(user)
+    start_index = -1
+    end_index = -1
+    for i in xrange(len(files)):
+        if end > files[i]:
+            end_index = i
+    for i in xrange(len(files)-1, -1, -1):
+        if start < files[i]:
+            start_index = i-1
+    start_index = max(start_index, 0)
+    print start_index, end_index
+    d = [{'date': files[i],
+         'mmol': load_blood_file(user, files[i])} \
+                 for i in range(start_index, end_index)]
+    return json.dumps(d)
 
 
 @app.route('/admin/add_user/', methods=['POST'])
