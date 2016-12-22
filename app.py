@@ -87,6 +87,14 @@ def get_blood():
     return 'not ok'
 
 
+"""
+Get data about several readings over a date range.
+Takes parameters `user`, `name`, `start`, and
+`end`.
+`user` and `name` are used for authentification.
+`start` and `end` must be date strings, and 
+`end` must be after `start`.
+"""
 @app.route("/blood/get_many/", methods=['POST'])
 def get_many_blood():
     # todo: move auth to decorator
