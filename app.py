@@ -107,6 +107,8 @@ def get_many_blood():
         return 'not ok'
     start = str(pendulum.parse(request.form['start']))
     end = str(pendulum.parse(request.form['end']))
+    if start > end:
+        return 'not ok'
     files = load_list_of_blood_files(user)
     start_index = -1
     end_index = -1
