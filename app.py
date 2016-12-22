@@ -55,6 +55,14 @@ def add_blood():
     return 'ok'
 
 
+"""
+Get data about a single reading.
+Takes parameters `user`, `pass`, and `n`,
+where `user` and `pass` are login details,
+and `n` says which reading you want (ie.
+`n` of 0 is the most recent reading, `n` of
+23 is the 24th most recent reading).
+"""
 @app.route("/blood/get/", methods=['POST'])
 def get_blood():
     user = request.form['user']
