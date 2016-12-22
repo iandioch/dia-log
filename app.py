@@ -21,6 +21,7 @@ def check_auth(user, password):
 
 
 def load_list_of_blood_files(user):
+    # todo: create utility method to get a specific user's dir
     return os.listdir(config['blood_dir'] + '/' + user)
 
 
@@ -31,6 +32,7 @@ def load_blood_file(user, date):
 
 @app.route("/blood/add/", methods=['POST'])
 def add_blood():
+    # todo: move auth to decorator
     user = request.form['user']
     password = request.form['pass']
     if not check_auth(user, password):
@@ -65,6 +67,7 @@ and `n` says which reading you want (ie.
 """
 @app.route("/blood/get/", methods=['POST'])
 def get_blood():
+    # todo: move auth to decorator
     user = request.form['user']
     password = request.form['pass']
     if not check_auth(user, password):
@@ -79,6 +82,7 @@ def get_blood():
             'date': date,
             'mmol': load_blood_file(user, date)
         })
+    # todo: return valid json for all responses
     return 'not ok'
 
 
